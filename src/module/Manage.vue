@@ -15,7 +15,7 @@
     data() {
       return {}
     },
-    method: {}
+    methods: {}
   }
 </script>
 

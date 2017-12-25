@@ -1,5 +1,5 @@
 <template>
-  <el-container id="adminNavigator" class="flex-container navigator-container">
+  <el-container id="studentNavigator" class="flex-container navigator-container">
     <el-aside class="navigator-container">
       <el-menu
         mode="horizontal"
@@ -8,17 +8,9 @@
         active-text-color="#ffd04b"
         class="navigator-container"
         router>
-        <el-menu-item index="/manage/admin/announcement">
+        <el-menu-item index="/manage/student/internship">
           <i class="el-icon-setting"></i>
-          <span slot="title">发布公告</span>
-        </el-menu-item>
-        <el-menu-item index="/manage/admin/teacher">
-          <i class="el-icon-setting"></i>
-          <span slot="title">教师信息管理</span>
-        </el-menu-item>
-        <el-menu-item index="/manage/admin/student">
-          <i class="el-icon-menu"></i>
-          <span slot="title">学生信息管理</span>
+          <span slot="title">实习信息管理</span>
         </el-menu-item>
       </el-menu>
     </el-aside>
@@ -30,7 +22,7 @@
 
 <script>
   export default {
-    name: 'adminNavigator',
+    name: 'student',
     data() {
       return {}
     }
