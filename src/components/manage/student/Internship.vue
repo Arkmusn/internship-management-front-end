@@ -2,7 +2,7 @@
   <div id="internship">
     <el-row>
       <el-col :span="24">
-        <el-button type="primary">申请实习</el-button>
+        <el-button type="primary" @click="editInternship">申请实习</el-button>
       </el-col>
     </el-row>
     <el-row>
@@ -28,12 +28,18 @@
         </el-table>
       </el-col>
     </el-row>
+    <edit-dialog :visible="dialog.visible" @close="dialog.visible=false"></edit-dialog>
   </div>
 </template>
 
 <script>
+  import EditInternship from './dialog/EditInternship'
+
   export default {
     name: 'internship',
+    components: {
+      'edit-dialog': EditInternship
+    },
     data() {
       return {
         table: {
@@ -54,9 +60,16 @@
             label: '指导教师',
             prop: 'teacher'
           }]
+        },
+        dialog: {
+          visible: false
         }
       }
     },
-    methods: {}
+    methods: {
+      editInternship() {
+        this.dialog.visible = true;
+      }
+    }
   }
 </script>
