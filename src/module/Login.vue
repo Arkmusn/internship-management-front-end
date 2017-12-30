@@ -11,7 +11,7 @@
               <el-input type="password" v-model="form.password"></el-input>
             </el-form-item>
             <div class="flex-container login-container">
-              <el-button type="primary" class="line-button" @click="handleClickLogin">登录</el-button>
+              <el-button type="primary" class="line-button" @click="handleLoginClick">登录</el-button>
             </div>
           </el-form>
         </div>
@@ -21,6 +21,8 @@
 </template>
 
 <script>
+  import Qs from 'qs'
+
   export default {
     name: 'login',
     data() {
@@ -32,8 +34,19 @@
       }
     },
     methods: {
-      handleClickLogin() {
+      handleLoginClick() {
+        this.$axios({
+          method: 'post',
+          url: this.$api.login.signIn,
+          data: Qs.stringify(this.form),
+          headers: {
+            'content-type': 'application/x-www-form-urlencoded'
+          }
+        }).then(res => {
 
+        }).catch(err => {
+
+        });
       }
     }
   }
