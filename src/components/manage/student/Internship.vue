@@ -28,17 +28,13 @@
         </el-table>
       </el-col>
     </el-row>
-    <edit-dialog :visible="dialog.visible" @close="dialog.visible=false"></edit-dialog>
   </div>
 </template>
 
 <script>
-  import EditInternship from './dialog/EditInternship'
-
   export default {
     name: 'internship',
     components: {
-      'edit-dialog': EditInternship
     },
     data() {
       return {
@@ -68,7 +64,7 @@
     },
     methods: {
       editInternship() {
-        this.dialog.visible = true;
+        console.log('edit');
       }
     }
   }

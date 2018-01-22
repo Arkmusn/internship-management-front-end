@@ -1,17 +1,24 @@
 <template>
   <div id="login">
-    <el-row type="flex" justify="center">
+    <el-row type="flex"
+            justify="center">
       <el-col :span="6">
         <div class="form-container">
-          <el-form label-width="60px" :model="form" ref="form">
+          <el-form label-width="60px"
+                   :model="form"
+                   ref="form">
             <el-form-item label="用户名">
               <el-input v-model="form.username"></el-input>
             </el-form-item>
             <el-form-item label="密码">
-              <el-input type="password" v-model="form.password"></el-input>
+              <el-input type="password"
+                        v-model="form.password"></el-input>
             </el-form-item>
             <div class="flex-container login-container">
-              <el-button type="primary" class="line-button" @click="handleLoginClick">登录</el-button>
+              <el-button type="primary"
+                         class="line-button"
+                         @click="clickLogin">登录
+              </el-button>
             </div>
           </el-form>
         </div>
@@ -34,7 +41,7 @@
       }
     },
     methods: {
-      handleLoginClick() {
+      clickLogin() {
         this.$axios({
           method: 'post',
           url: this.$api.login.signIn,
@@ -43,9 +50,10 @@
             'content-type': 'application/x-www-form-urlencoded'
           }
         }).then(res => {
-
+          const role = res[0].name;
+          this.$router.push('./manage/' + role);
         }).catch(err => {
-
+          console.log(err);
         });
       }
     }
