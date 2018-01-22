@@ -8,6 +8,7 @@ import Axios from "axios";
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 import Api from "../config/api";
+import ExceptionHandler from "./exception/exceptionHandler";
 
 Vue.use(ElementUI);
 
@@ -24,16 +25,18 @@ Vue.prototype.$axios = axiosOptions => {
   return new Promise((resolve, reject) => {
     Axios(axiosOptions)
       .then(resp => {
-        if (resp.success === true) {
-          resolve(resp.data);
+        let success = resp.data.success;
+        let data = resp.data.data;
+
+        if (success === true) {
+          resolve(data);
         }
         else {
-          // TODO 请求错误处理
-          reject(resp.code);
+          ExceptionHandler(resp, vueInstance);
+          reject(resp);
         }
       })
       .catch(err => {
-        // TODO 异常错误处理
         reject(err);
       })
   });
@@ -41,7 +44,7 @@ Vue.prototype.$axios = axiosOptions => {
 Vue.prototype.$api = Api;
 
 /* eslint-disable no-new */
-new Vue({
+const vueInstance = new Vue({
   el: '#app',
   router: Router,
   template: '<App/>',
