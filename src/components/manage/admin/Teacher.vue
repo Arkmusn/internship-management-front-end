@@ -16,26 +16,31 @@
         <el-table
           :data="table.data"
           border
-          stripe>
+          stripe
+          @selection-change="selectionChange">
           <el-table-column type="selection"
                            fixed="left"></el-table-column>
           <el-table-column
             v-for="column in table.columns"
             :key="column.prop"
             :label="column.label"
-            :prop="column.prop"></el-table-column>
+            :prop="column.prop"
+            :formatter="column.formatter"></el-table-column>
           <el-table-column label="操作"
                            width="250"
                            fixed="right">
             <template slot-scope="table">
               <el-button size="mini"
-                         type="primary">编辑
+                         type="primary"
+                         @click="openDialog(table.row)">编辑
               </el-button>
               <el-button size="mini"
-                         type="danger">删除
+                         type="danger"
+                         @click="deleteTeacher([table.row])">删除
               </el-button>
               <el-button size="mini"
-                         type="warning">重置密码
+                         type="warning"
+                         @click="resetPassword(table.row)">重置密码
               </el-button>
             </template>
           </el-table-column>
@@ -48,7 +53,9 @@
                        :total="pagination.total"
                        :page-size="pagination.size"
                        :page-sizes="pagination.sizes"
-                       :current-page="pagination.page"></el-pagination>
+                       :current-page="pagination.page"
+                       @size-change="loadTeacherData"
+                       @current-change="loadTeacherData"></el-pagination>
       </el-col>
     </el-row>
     <edit-teacher :visible="dialog.visible"
@@ -76,7 +83,7 @@
           columns: [
             {
               label: '教工号',
-              prop: 'no'
+              prop: 'user.username'
             },
             {
               label: '姓名',
@@ -84,11 +91,17 @@
             },
             {
               label: '性别',
-              prop: 'gender'
+              prop: 'sex',
+              formatter: (row) => {
+                if (row.sex)
+                  return '女';
+                else
+                  return '男';
+              }
             },
             {
               label: '系别',
-              prop: 'department'
+              prop: 'department.name'
             },
           ]
         },
@@ -110,14 +123,53 @@
           url: this.$api.teacher.url,
           methods: 'get',
           params: {
-            page: 1,
-            size: 10,
+            page: this.pagination.page,
+            size: this.pagination.size,
           }
         }).then(data => {
-          this.table.data = data;
+          this.table.data = data.content;
+          this.updatePagination(data, this.pagination);
         }).catch(err => {
-          console.log(err);
+
         })
+      },
+      selectionChange(selection) {
+        console.log(selection);
+      },
+      updatePagination(data, pagination) {
+        pagination.size = data.size;
+        pagination.total = data.totalElements;
+      },
+      deleteTeacher(teachers) {
+        let _this = this;
+        // 批量删除
+        if (teachers.length > 1) {
+          this.$confirm('确定删除选中的教师', '提示', {
+            type: 'warning'
+          }).then(deleteRequest).catch()
+        }
+        // 单个删除
+        else {
+          this.$confirm(`确定删除教师'${teachers[0].name}'?`, '提示', {
+            type: 'warning'
+          }).then(deleteRequest).catch();
+        }
+
+        function deleteRequest() {
+          _this.$axios({
+            url: _this.$api.teacher.delete,
+            method: 'post',
+            data: teachers.map(teacher => {
+              return teacher.id
+            }),
+          }).then(() => {
+            _this.$message({
+              type: 'info',
+              message: '删除成功'
+            })
+          }).catch(err => {
+          })
+        }
       },
       openDialog(teacher) {
         this.dialog.teacher = teacher;

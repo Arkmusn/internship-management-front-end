@@ -14,7 +14,7 @@
           <el-input v-model="form.name"></el-input>
         </el-form-item>
         <el-form-item label="性别">
-          <el-switch v-model="form.gender"
+          <el-switch v-model="form.sex"
                      inactive-text="男"
                      inactive-color="#409EFF"
                      active-text="女"
@@ -75,7 +75,7 @@
             username: ''
           },
           name: '',
-          gender: false,
+          sex: false,
           department: {},
         },
         departments: [],
@@ -91,11 +91,10 @@
               }).then(data => {
                 this.$message({
                   type: 'success',
-                  message: '保存成功'
+                  message: '保存成功',
                 });
-                this.close();
+                this.close(true);
               }).catch(err => {
-                console.log(err);
                 this.$message({
                   type: 'error',
                   message: '保存失败'
@@ -118,8 +117,8 @@
       }
     },
     methods: {
-      close() {
-        this.$emit('close');
+      close(refresh) {
+        this.$emit('close', refresh);
       },
       loadDepartment() {
         this.$axios({
@@ -128,7 +127,6 @@
         }).then(data => {
           this.departments = data;
         }).catch(err => {
-          console.log(err);
         })
       }
     },
@@ -145,7 +143,7 @@
               username: ''
             },
             name: '',
-            gender: false,
+            sex: false,
             department: {},
           }
         }

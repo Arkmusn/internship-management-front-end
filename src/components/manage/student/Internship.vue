@@ -64,7 +64,7 @@
     },
     methods: {
       editInternship() {
-        console.log('edit');
+
       }
     }
   }

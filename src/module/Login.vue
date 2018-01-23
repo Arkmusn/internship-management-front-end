@@ -53,7 +53,7 @@
           const role = res[0].name;
           this.$router.push('./manage/' + role);
         }).catch(err => {
-          console.log(err);
+
         });
       }
     }
