@@ -8,16 +8,23 @@
           </el-button>
           <el-button>文件导入</el-button>
         </el-button-group>
-        <el-button type="danger">删除</el-button>
+        <el-button type="danger"
+                   :disabled="table.selected.length === 0"
+                   @click="deleteTeacher(table.selected)">删除
+        </el-button>
       </el-col>
     </el-row>
     <el-row>
       <el-col>
         <el-table
+          ref="table-teacher"
           :data="table.data"
+          height="80%"
+          max-height="800px"
           border
           stripe
-          @selection-change="selectionChange">
+          @selection-change="selectionChange"
+          @row-click="rowClick">
           <el-table-column type="selection"
                            fixed="left"></el-table-column>
           <el-table-column
@@ -34,14 +41,47 @@
                          type="primary"
                          @click="openDialog(table.row)">编辑
               </el-button>
-              <el-button size="mini"
-                         type="danger"
-                         @click="deleteTeacher([table.row])">删除
-              </el-button>
-              <el-button size="mini"
-                         type="warning"
-                         @click="resetPassword(table.row)">重置密码
-              </el-button>
+              <el-popover placement="top"
+                          trigger="click"
+                          title="确认删除?"
+                          v-model="table.row.deleteVisible">
+                <el-form size="mini">
+                  <el-form-item>
+                    <el-button type="danger"
+                               @click="deleteTeacher([table.row])">确认
+                    </el-button>
+                    <el-button @click="table.row.deleteVisible=false">取消</el-button>
+                  </el-form-item>
+                </el-form>
+                <el-button size="mini"
+                           type="danger"
+                           slot="reference"
+                           @click="table.row.deleteVisible=true">删除
+                </el-button>
+              </el-popover>
+
+              <el-popover trigger="click"
+                          placement="top"
+                          title="重置密码"
+                          v-model="table.row.resetPasswordVisible">
+                <el-form size="mini">
+                  <el-form-item>
+                    <el-input v-model="table.row.newPassword"
+                              placeholder="请输入新密码"></el-input>
+                  </el-form-item>
+                  <el-form-item>
+                    <el-button type="primary"
+                               @click="resetPassword(table.row)">提交
+                    </el-button>
+                    <el-button @click="table.row.resetPasswordVisible=false">取消</el-button>
+                  </el-form-item>
+                </el-form>
+                <el-button slot="reference"
+                           size="mini"
+                           type="warning"
+                           @click="table.row.resetPasswordVisible=true">重置密码
+                </el-button>
+              </el-popover>
             </template>
           </el-table-column>
         </el-table>
@@ -80,6 +120,7 @@
       return {
         table: {
           data: [{}],
+          selected: [],
           columns: [
             {
               label: '教工号',
@@ -133,8 +174,11 @@
 
         })
       },
-      selectionChange(selection) {
-        console.log(selection);
+      selectionChange(selected) {
+        this.table.selected = selected;
+      },
+      rowClick(row) {
+        this.$refs['table-teacher'].toggleRowSelection(row);
       },
       updatePagination(data, pagination) {
         pagination.size = data.size;
@@ -144,15 +188,14 @@
         let _this = this;
         // 批量删除
         if (teachers.length > 1) {
-          this.$confirm('确定删除选中的教师', '提示', {
+          this.$confirm('确定删除选中的教师?', '提示', {
             type: 'warning'
-          }).then(deleteRequest).catch()
+          }).then(deleteRequest).catch(() => {
+          })
         }
         // 单个删除
         else {
-          this.$confirm(`确定删除教师'${teachers[0].name}'?`, '提示', {
-            type: 'warning'
-          }).then(deleteRequest).catch();
+          deleteRequest();
         }
 
         function deleteRequest() {
@@ -166,10 +209,25 @@
             _this.$message({
               type: 'info',
               message: '删除成功'
-            })
+            });
+            _this.loadTeacherData();
           }).catch(err => {
           })
         }
+      },
+      resetPassword(teacher) {
+        this.$axios({
+          url: this.$api.teacher.resetPassword,
+          method: 'post',
+          data: {
+            id: teacher.id,
+            newPassword: teacher.newPassword
+          }
+        }).then(() => {
+          this.$message({type: 'success', message: '重置密码成功'});
+          teacher.resetPasswordVisible = false;
+        }).catch(() => {
+        })
       },
       openDialog(teacher) {
         this.dialog.teacher = teacher;
