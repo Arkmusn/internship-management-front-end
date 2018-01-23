@@ -20,43 +20,51 @@ Vue.use(Router)
 
 export default new Router({
   mode: 'hash',
-  routes: [{
-    path: '/login',
-    name: 'login',
-    component: Login
-  }, {
-    path: '/manage',
-    name: 'manage',
-    component: Manage,
-    children: [{
-      path: 'admin',
-      component: AdminNavigator,
-      children: [{
-        path: 'announcement',
-        component: Announcement
-      }, {
-        path: 'student',
-        component: StudentManage
-      }, {
-        path: 'teacher',
-        component: TeacherManage
-      }
+  routes: [
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
+    }, {
+      path: '/manage',
+      name: 'manage',
+      component: Manage,
+      children: [
+        {
+          path: 'admin',
+          component: AdminNavigator,
+          children: [
+            {
+              path: 'announcement',
+              component: Announcement
+            }, {
+              path: 'student',
+              component: StudentManage
+            }, {
+              path: 'teacher',
+              component: TeacherManage
+            }
+          ]
+        }, {
+          path: 'teacher',
+          component: TeacherNavigator,
+          children: [
+            {
+              path: 'internship',
+              component: TeacherInternship
+            }
+          ]
+        }, {
+          path: 'student',
+          component: StudentNavigator,
+          children: [
+            {
+              path: 'internship',
+              component: StudentInternship
+            }
+          ]
+        }
       ]
-    }, {
-      path: 'teacher',
-      component: TeacherNavigator,
-      children: [{
-        path: 'internship',
-        component: TeacherInternship
-      }]
-    }, {
-      path: 'student',
-      component: StudentNavigator,
-      children: [{
-        path: 'internship',
-        component: StudentInternship
-      }]
-    }]
-  }
+    }
   ]
 })

@@ -15,17 +15,26 @@
           :data="table.data"
           border
           stripe>
-          <el-table-column type="selection" fixed="left"></el-table-column>
+          <el-table-column type="selection"
+                           fixed="left"></el-table-column>
           <el-table-column
             v-for="column in table.columns"
             :key="column.prop"
             :label="column.label"
             :prop="column.prop"></el-table-column>
-          <el-table-column label="操作" width="250" fixed="right">
+          <el-table-column label="操作"
+                           width="250"
+                           fixed="right">
             <template slot-scope="table">
-              <el-button size="mini" type="primary">编辑</el-button>
-              <el-button size="mini" type="danger">删除</el-button>
-              <el-button size="mini" type="warning">重置密码</el-button>
+              <el-button size="mini"
+                         type="primary">编辑
+              </el-button>
+              <el-button size="mini"
+                         type="danger">删除
+              </el-button>
+              <el-button size="mini"
+                         type="warning">重置密码
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -41,22 +50,24 @@
       return {
         table: {
           data: [{}],
-          columns: [{
-            label: '学号',
-            prop: 'no'
-          }, {
-            label: '姓名',
-            prop: 'name'
-          }, {
-            label: '性别',
-            prop: 'gender'
-          }, {
-            label: '班级',
-            prop: 'class'
-          }, {
-            label: '系别',
-            prop: 'department'
-          }]
+          columns: [
+            {
+              label: '学号',
+              prop: 'no'
+            }, {
+              label: '姓名',
+              prop: 'name'
+            }, {
+              label: '性别',
+              prop: 'gender'
+            }, {
+              label: '班级',
+              prop: 'class'
+            }, {
+              label: '系别',
+              prop: 'department'
+            }
+          ]
         }
       }
     }

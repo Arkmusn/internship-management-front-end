@@ -12,5 +12,10 @@ export default {
     url: apiUrl + '/teacher/',
     'delete': apiUrl + '/teacher/delete',
     resetPassword: apiUrl + '/teacher/resetPassword',
+  },
+  student: {
+    url: apiUrl + '/student/',
+    'delete': apiUrl + '/student/delete',
+    resetPassword: apiUrl + '/student/resetPassword',
   }
 }

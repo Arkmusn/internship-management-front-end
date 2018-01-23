@@ -1,5 +1,6 @@
 <template>
-  <el-container id="studentNavigator" class="flex-container navigator-container">
+  <el-container id="studentNavigator"
+                class="flex-container navigator-container">
     <el-aside class="navigator-container">
       <el-menu
         mode="horizontal"
@@ -15,7 +16,7 @@
       </el-menu>
     </el-aside>
     <el-main>
-      <router-view/>
+      <router-view />
     </el-main>
   </el-container>
 </template>

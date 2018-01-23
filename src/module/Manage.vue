@@ -3,7 +3,7 @@
     <el-container class="container">
       <el-header class="main-bgcolor"></el-header>
       <el-container>
-        <router-view/>
+        <router-view />
       </el-container>
     </el-container>
   </div>
