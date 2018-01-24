@@ -3,10 +3,15 @@
     <el-row>
       <el-col :span="24">
         <el-button-group>
-          <el-button type="primary">新增学生</el-button>
+          <el-button type="primary"
+                     @click="openDialog({})">新增学生
+          </el-button>
           <el-button>文件导入</el-button>
         </el-button-group>
-        <el-button type="danger">删除</el-button>
+        <el-button type="danger"
+                   :disabled="table.selected.length === 0"
+                   @click="deleteStudent(table.selected)">删除
+        </el-button>
       </el-col>
     </el-row>
     <el-row>

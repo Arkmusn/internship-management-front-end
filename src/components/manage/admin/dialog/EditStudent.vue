@@ -29,10 +29,10 @@
             <el-option-group v-for="department in departments"
                              :key="department.id"
                              :label="department.name">
-              <el-option v-for="classInfo in department"
-                         :key="classInfo.id"
-                         :label="classInfo.name"
-                         :value="classInfo"></el-option>
+              <el-option v-for="item in department.classInfo"
+                         :key="item.id"
+                         :label="item.name"
+                         :value="item"></el-option>
             </el-option-group>
           </el-select>
         </el-form-item>
@@ -132,7 +132,7 @@
           method: 'get',
         }).then(data => {
           let departmentMap = new Map();
-          for (classInfo of data) {
+          for (let classInfo of data) {
             let department = classInfo.department;
 
             if (!departmentMap.has(department.id)) {
@@ -141,8 +141,9 @@
               this.departments.push(department);
             }
             else {
-              department.classInfo.push(classInfo);
+              departmentMap.get(department.id).classInfo.push(classInfo);
             }
+            delete classInfo.department;
           }
         }).catch(err => {
         })
