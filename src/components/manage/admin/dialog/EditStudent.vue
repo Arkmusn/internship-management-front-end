@@ -111,6 +111,32 @@
           {
             label: '继续添加',
             handler: () => {
+              this.$axios({
+                url: this.$api.student.url,
+                method: 'post',
+                data: this.form
+              }).then(data => {
+                this.$message({
+                  type: 'success',
+                  message: '保存成功',
+                });
+                this.form = {
+                  id: -1,
+                  user: {
+                    username: ''
+                  },
+                  name: '',
+                  sex: false,
+                  classInfo: {
+                    department: {},
+                  },
+                }
+              }).catch(err => {
+                this.$message({
+                  type: 'error',
+                  message: '保存失败'
+                })
+              })
             }
           },
           {
