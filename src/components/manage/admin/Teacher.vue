@@ -133,7 +133,7 @@
             {
               label: '性别',
               prop: 'sex',
-              formatter: (row) => {
+              formatter: row => {
                 if (row.sex)
                   return '女';
                 else

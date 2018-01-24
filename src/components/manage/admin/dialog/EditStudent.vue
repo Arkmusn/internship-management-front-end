@@ -1,5 +1,5 @@
 <template>
-  <div id="EditTeacher">
+  <div id="EditStudent">
     <el-dialog :visible.sync="visible"
                :before-close="close"
                width="300px"
@@ -7,7 +7,7 @@
       <el-form label-position="right"
                size="small"
                label-width="60px">
-        <el-form-item label="教工号">
+        <el-form-item label="学号">
           <el-input v-model="form.user.username"></el-input>
         </el-form-item>
         <el-form-item label="姓名">
@@ -20,16 +20,20 @@
                      active-text="女"
                      active-color="#df99c9"></el-switch>
         </el-form-item>
-        <el-form-item label="系别">
-          <el-select v-model="form.department"
+        <el-form-item label="班级">
+          <el-select v-model="form.classInfo"
                      value-key="id"
                      clearable
                      filterable
                      placeholder="请选择">
-            <el-option v-for="item in departments"
-                       :key="item.id"
-                       :value="item"
-                       :label="item.name"></el-option>
+            <el-option-group v-for="department in departments"
+                             :key="department.id"
+                             :label="department.name">
+              <el-option v-for="classInfo in department"
+                         :key="classInfo.id"
+                         :label="classInfo.name"
+                         :value="classInfo"></el-option>
+            </el-option-group>
           </el-select>
         </el-form-item>
       </el-form>
@@ -47,13 +51,13 @@
 
 <script>
   export default {
-    name: 'EditTeacher',
+    name: 'EditStudent',
     props: {
       visible: {
         type: Boolean,
         default: false
       },
-      teacher: {
+      student: {
         type: Object,
         default: () => {
           return {}
@@ -61,11 +65,11 @@
       },
       title: {
         type: String,
-        default: '编辑教师'
+        default: '编辑学生'
       }
     },
     mounted() {
-      this.loadDepartment();
+      this.loadClassInfo();
     },
     data() {
       return {
@@ -76,7 +80,9 @@
           },
           name: '',
           sex: false,
-          department: {},
+          classInfo: {
+            department: {},
+          },
         },
         departments: [],
         buttons: [
@@ -85,7 +91,7 @@
             type: 'primary',
             handler: () => {
               this.$axios({
-                url: this.$api.teacher.url,
+                url: this.$api.student.url,
                 method: 'post',
                 data: this.form
               }).then(data => {
@@ -120,21 +126,33 @@
       close(refresh) {
         this.$emit('close', refresh);
       },
-      loadDepartment() {
+      loadClassInfo() {
         this.$axios({
-          url: this.$api.department.list,
+          url: this.$api.classInfo.list,
           method: 'get',
         }).then(data => {
-          this.departments = data;
+          let departmentMap = new Map();
+          for (classInfo of data) {
+            let department = classInfo.department;
+
+            if (!departmentMap.has(department.id)) {
+              departmentMap.set(department.id, department);
+              department.classInfo = [classInfo];
+              this.departments.push(department);
+            }
+            else {
+              department.classInfo.push(classInfo);
+            }
+          }
         }).catch(err => {
         })
       }
     },
     watch: {
-      teacher() {
-        let id = this.teacher.id;
+      student() {
+        let id = this.student.id;
         if (id && id !== -1) {
-          this.form = JSON.parse(JSON.stringify(this.teacher));
+          this.form = JSON.parse(JSON.stringify(this.student));
         }
         else {
           this.form = {
@@ -144,7 +162,9 @@
             },
             name: '',
             sex: false,
-            department: {},
+            classInfo: {
+              department: {},
+            },
           }
         }
       }

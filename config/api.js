@@ -8,6 +8,9 @@ export default {
   department: {
     list: apiUrl + '/department/list'
   },
+  classInfo: {
+    list: apiUrl + '/classInfo/list'
+  },
   teacher: {
     url: apiUrl + '/teacher/',
     'delete': apiUrl + '/teacher/delete',
