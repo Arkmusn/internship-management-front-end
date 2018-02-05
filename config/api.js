@@ -20,5 +20,9 @@ export default {
     url: apiUrl + '/student/',
     'delete': apiUrl + '/student/delete',
     resetPassword: apiUrl + '/student/resetPassword',
-  }
+  },
+  internship: {
+    url: apiUrl + '/intern/',
+    'delete': apiUrl + '/intern/delete',
+  },
 }
