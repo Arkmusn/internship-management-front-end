@@ -27,4 +27,7 @@
   html, body {
     height: 100%;
   }
+  .full-height {
+    height: 100%;
+  }
 </style>

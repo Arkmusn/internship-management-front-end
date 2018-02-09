@@ -1,5 +1,6 @@
 <template>
-  <div id="login">
+  <div id="login"
+       class="full-height">
     <el-row type="flex"
             justify="center">
       <el-col :span="6">
@@ -49,11 +50,15 @@
           headers: {
             'content-type': 'application/x-www-form-urlencoded'
           }
-        }).then(res => {
-          const role = res[0].name;
+        }).then(data => {
+          localStorage.setItem('username', data.username);
+          const role = data.roles[0].name;
           this.$router.push('./manage/' + role);
         }).catch(err => {
-
+          this.$message({
+            type: 'error',
+            message: '账号或密码错误',
+          })
         });
       }
     }
