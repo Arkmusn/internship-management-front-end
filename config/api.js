@@ -15,6 +15,7 @@ export default {
     url: apiUrl + '/teacher/',
     'delete': apiUrl + '/teacher/delete',
     resetPassword: apiUrl + '/teacher/resetPassword',
+    queryTeacherByName: apiUrl + '/teacher/queryTeacherByName',
   },
   student: {
     url: apiUrl + '/student/',

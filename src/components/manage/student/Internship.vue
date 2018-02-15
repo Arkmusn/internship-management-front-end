@@ -62,7 +62,7 @@
     data() {
       return {
         table: {
-          data: [{}],
+          data: [],
           columns: [
             {
               label: '状态',
