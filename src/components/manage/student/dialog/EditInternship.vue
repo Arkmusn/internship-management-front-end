@@ -128,6 +128,7 @@
                 data: this.form,
                 transformRequest: [
                   (data, headers) => {
+                    data.student = JSON.parse(localStorage.getItem('user'));
                     const values = this.checkboxGroup.weekday.values;
                     let weekday = 0;
                     for (let value of values) {
@@ -135,8 +136,7 @@
                     }
                     data.weekday = weekday;
                     headers.post['Content-Type'] = 'application/json;charset=utf-8';
-                    let json = JSON.stringify(data);
-                    return json.substring(1, json.length - 1);
+                    return JSON.stringify(data);
                   }
                 ],
               }).then(data => {

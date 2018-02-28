@@ -26,10 +26,12 @@
             <template slot-scope="table">
               <el-button size="mini"
                          type="primary"
-                         @click="openDialog(table.row)">编辑
+                         @click="openDialog(table.row)"
+                         v-if="table.row.status==='CREATED'||table.row.status==='NOT_PASS'">编辑
               </el-button>
               <el-button size="mini"
-                         type="danger">删除
+                         type="danger"
+                         v-if="table.row.status==='CREATED'||table.row.status==='NOT_PASS'">删除
               </el-button>
             </template>
           </el-table-column>
@@ -59,6 +61,9 @@
     components: {
       'edit-internship': EditInternship,
     },
+    mounted() {
+      this.loadInternshipData();
+    },
     data() {
       return {
         table: {
@@ -66,7 +71,24 @@
           columns: [
             {
               label: '状态',
-              prop: 'status'
+              prop: 'status',
+              formatter: row => {
+                const status = row.status;
+                switch (status) {
+                  case 'CREATED':
+                    return '待审核';
+                    break;
+                  case 'PROCESSING':
+                    return '进行中';
+                    break;
+                  case 'NOT_PASS':
+                    return '未通过';
+                    break;
+                  case 'FINISH':
+                    return '已结束';
+                    break;
+                }
+              },
             }, {
               label: '主题',
               prop: 'theme'
@@ -75,7 +97,8 @@
               prop: 'companyName'
             }, {
               label: '起止时间',
-              prop: 'date'
+              prop: 'date',
+              formatter: row => row.startTime.toString() + ' - ' + row.endTime.toString(),
             }, {
               label: '指导教师',
               prop: 'teacher.name'
@@ -123,9 +146,10 @@
       },
       closeDialog(success) {
         if (success) {
+          this.loadInternshipData();
         }
         this.dialog.visible = false;
       },
-    }
+    },
   }
 </script>

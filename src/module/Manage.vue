@@ -36,8 +36,9 @@
       return {}
     },
     computed: {
-      username: function () {
-        return localStorage.getItem('username');
+      username() {
+        const user = JSON.parse(localStorage.getItem('user'));
+        return user.username;
       },
     },
     methods: {
@@ -46,7 +47,7 @@
           url: this.$api.login.signOut,
           method: 'post',
         }).then(data => {
-          localStorage.removeItem('username');
+          localStorage.removeItem('user');
           this.$router.push('/login');
         }).catch(err => {
         })

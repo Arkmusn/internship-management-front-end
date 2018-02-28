@@ -51,7 +51,7 @@
             'content-type': 'application/x-www-form-urlencoded'
           }
         }).then(data => {
-          localStorage.setItem('username', data.username);
+          localStorage.setItem('user', JSON.stringify(data));
           const role = data.roles[0].name;
           this.$router.push('./manage/' + role);
         }).catch(err => {
