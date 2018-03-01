@@ -2,10 +2,21 @@
   <div id="internship">
     <el-row>
       <el-col :span="24">
+        <el-button type="primary"
+                   :disabled="table.selected.length === 0"
+                   @click="audit(table.selected)">审核
+        </el-button>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="24">
         <el-table
+          ref="table-internship"
           :data="table.data"
           border
-          stripe>
+          stripe
+          @selection-change="selectionChange"
+          @row-click="rowClick">
           <el-table-column type="selection"
                            fixed="left"></el-table-column>
           <el-table-column
@@ -63,6 +74,7 @@
       return {
         table: {
           data: [{}],
+          selected: [],
           columns: [
             {
               label: '状态',
@@ -135,6 +147,9 @@
       selectionChange(selected) {
         this.table.selected = selected;
       },
+      rowClick(row) {
+        this.$refs['table-internship'].toggleRowSelection(row);
+      },
       openDialog(internship) {
         this.dialog.internship = internship;
         this.dialog.visible = true;
@@ -144,6 +159,25 @@
           this.loadInternshipData();
         }
         this.dialog.visible = false;
+      },
+      audit(internships) {
+        this.$confirm('确定审核通过已选定的申报书吗?', '提示', {
+          type: 'warning',
+        }).then(() => {
+          this.$axios({
+            url: this.$api.internship.audit,
+            method: 'post',
+            data: internships.map(internship => internship.id)
+          }).then(() => {
+            this.$message({
+              type: 'info',
+              message: '审核完成',
+            });
+            this.loadInternshipData();
+          }).catch(err => {
+          })
+        }).catch(err => {
+        })
       },
     },
   }

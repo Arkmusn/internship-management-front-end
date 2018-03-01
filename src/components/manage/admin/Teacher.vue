@@ -202,9 +202,7 @@
           _this.$axios({
             url: _this.$api.teacher.delete,
             method: 'post',
-            data: teachers.map(teacher => {
-              return teacher.id
-            }),
+            data: teachers.map(teacher => teacher.id),
           }).then(() => {
             _this.$message({
               type: 'info',

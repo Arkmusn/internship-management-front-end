@@ -26,5 +26,6 @@ export default {
   internship: {
     url: apiUrl + '/intern/',
     'delete': apiUrl + '/intern/delete',
+    audit: apiUrl + '/intern/audit',
   },
 }
