@@ -29,10 +29,26 @@
                          @click="openDialog(table.row)"
                          v-if="table.row.status==='CREATED'||table.row.status==='NOT_PASS'">编辑
               </el-button>
-              <el-button size="mini"
-                         type="danger"
-                         v-if="table.row.status==='CREATED'||table.row.status==='NOT_PASS'">删除
-              </el-button>
+
+              <el-popover placement="top"
+                          trigger="click"
+                          title="确认删除?"
+                          v-model="table.row.deleteVisible"
+                          v-if="table.row.status==='CREATED'||table.row.status==='NOT_PASS'">
+                <el-form size="mini">
+                  <el-form-item>
+                    <el-button type="danger"
+                               @click="deleteInternship([table.row])">确认
+                    </el-button>
+                    <el-button @click="table.row.deleteVisible=false">取消</el-button>
+                  </el-form-item>
+                </el-form>
+                <el-button size="mini"
+                           type="danger"
+                           slot="reference"
+                           @click="table.row.deleteVisible=true">删除
+                </el-button>
+              </el-popover>
             </template>
           </el-table-column>
         </el-table>
@@ -149,6 +165,35 @@
           this.loadInternshipData();
         }
         this.dialog.visible = false;
+      },
+      deleteInternship(internships) {
+        let _this = this;
+        // 批量删除
+        if (internships.length > 1) {
+          this.$confirm('确定删除选中的实习申报书?', '提示', {
+            type: 'warning'
+          }).then(deleteRequest).catch(() => {
+          })
+        }
+        // 单个删除
+        else {
+          deleteRequest();
+        }
+
+        function deleteRequest() {
+          _this.$axios({
+            url: _this.$api.internship.delete,
+            method: 'post',
+            data: internships.map(internship => internship.id),
+          }).then(() => {
+            _this.$message({
+              type: 'success',
+              message: '删除成功'
+            });
+            _this.loadInternshipData();
+          }).catch(err => {
+          })
+        }
       },
     },
   }

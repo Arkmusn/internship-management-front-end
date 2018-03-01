@@ -17,9 +17,12 @@
     <el-row>
       <el-col :span="24">
         <el-table
+          ref="table-student"
           :data="table.data"
           border
-          stripe>
+          stripe
+          @selection-change="selectionChange"
+          @row-click="rowClick">
           <el-table-column type="selection"
                            fixed="left"></el-table-column>
           <el-table-column
@@ -207,7 +210,7 @@
             }),
           }).then(() => {
             _this.$message({
-              type: 'info',
+              type: 'success',
               message: '删除成功'
             });
             _this.loadStudentData();

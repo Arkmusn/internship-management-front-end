@@ -18,6 +18,7 @@
           @selection-change="selectionChange"
           @row-click="rowClick">
           <el-table-column type="selection"
+                           :selectable="isSelectable"
                            fixed="left"></el-table-column>
           <el-table-column
             v-for="column in table.columns"
@@ -34,10 +35,25 @@
                          @click="openDialog(table.row)"
                          v-if="table.row.status==='CREATED'">审核
               </el-button>
-              <el-button size="mini"
-                         type="danger"
-                         v-if="table.row.status==='CREATED'">打回
-              </el-button>
+              <el-popover placement="top"
+                          trigger="click"
+                          title="确认打回?"
+                          v-model="table.row.rejectVisible"
+                          v-if="table.row.status==='CREATED'">
+                <el-form size="mini">
+                  <el-form-item>
+                    <el-button type="danger"
+                               @click="reject([table.row])">确认
+                    </el-button>
+                    <el-button @click="table.row.rejectVisible=false">取消</el-button>
+                  </el-form-item>
+                </el-form>
+                <el-button size="mini"
+                           type="danger"
+                           slot="reference"
+                           @click="table.row.rejectVisible=true">打回
+                </el-button>
+              </el-popover>
             </template>
           </el-table-column>
         </el-table>
@@ -54,8 +70,9 @@
     </el-row>
     <edit-internship :visible="dialog.visible"
                      :internship="dialog.internship"
-                     @close="closeDialog"
-                     type="teacher"></edit-internship>
+                     type="teacher"
+                     @audit="audit"
+                     @close="closeDialog"></edit-internship>
   </div>
 </template>
 
@@ -148,7 +165,8 @@
         this.table.selected = selected;
       },
       rowClick(row) {
-        this.$refs['table-internship'].toggleRowSelection(row);
+        if (this.isSelectable(row))
+          this.$refs['table-internship'].toggleRowSelection(row);
       },
       openDialog(internship) {
         this.dialog.internship = internship;
@@ -160,24 +178,62 @@
         }
         this.dialog.visible = false;
       },
+      isSelectable(row) {
+        return row.status === 'CREATED';
+      },
       audit(internships) {
-        this.$confirm('确定审核通过已选定的申报书吗?', '提示', {
-          type: 'warning',
-        }).then(() => {
-          this.$axios({
-            url: this.$api.internship.audit,
+        let _this = this;
+        if (internships.length > 1) {
+          this.$confirm('确定审核通过已选定的申报书吗?', '提示', {
+            type: 'warning'
+          }).then(auditRequest).catch(() => {
+          })
+        }
+        else {
+          auditRequest();
+        }
+
+        function auditRequest() {
+          _this.$axios({
+            url: _this.$api.internship.audit,
             method: 'post',
             data: internships.map(internship => internship.id)
           }).then(() => {
-            this.$message({
-              type: 'info',
+            _this.$message({
+              type: 'success',
               message: '审核完成',
             });
-            this.loadInternshipData();
+            _this.loadInternshipData();
           }).catch(err => {
           })
-        }).catch(err => {
-        })
+        }
+      },
+      reject(internships) {
+        let _this = this;
+        if (internships.length > 1) {
+          this.$confirm('确定打回已选定的申报书吗?', '提示', {
+            type: 'warning'
+          }).then(deleteRequest).catch(() => {
+          })
+        }
+        else {
+          deleteRequest();
+        }
+
+        function deleteRequest() {
+          _this.$axios({
+            url: _this.$api.internship.reject,
+            method: 'post',
+            data: internships.map(internship => internship.id),
+          }).then(() => {
+            _this.$message({
+              type: 'success',
+              message: '已打回申报书'
+            });
+            _this.loadInternshipData();
+          }).catch(err => {
+          })
+        }
       },
     },
   }

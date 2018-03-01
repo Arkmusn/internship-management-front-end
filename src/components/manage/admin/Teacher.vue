@@ -19,8 +19,6 @@
         <el-table
           ref="table-teacher"
           :data="table.data"
-          height="80%"
-          max-height="800px"
           border
           stripe
           @selection-change="selectionChange"
@@ -205,7 +203,7 @@
             data: teachers.map(teacher => teacher.id),
           }).then(() => {
             _this.$message({
-              type: 'info',
+              type: 'success',
               message: '删除成功'
             });
             _this.loadTeacherData();

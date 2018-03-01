@@ -66,12 +66,20 @@
         </el-form-item>
       </el-form>
       <span slot="footer">
-        <el-button v-for="button in buttons"
-                   :key="button.label"
-                   :type="button.type"
-                   @click="button.handler">
-          {{ button.label }}
-        </el-button>
+        <template v-if="type==='student'">
+          <el-button v-for="button in buttons.student"
+                     :key="button.label"
+                     :type="button.type"
+                     @click="button.handler">{{ button.label }}
+          </el-button>
+        </template>
+        <template v-if="type==='teacher'">
+          <el-button v-for="button in buttons.teacher"
+                     :key="button.label"
+                     :type="button.type"
+                     @click="button.handler">{{ button.label }}
+          </el-button>
+        </template>
       </span>
     </el-dialog>
   </div>
@@ -128,49 +136,66 @@
           rank: '',
           attachment: false,
         },
-        buttons: [
-          {
-            label: '提交审核',
-            type: 'primary',
-            handler: () => {
-              this.$axios({
-                url: this.$api.internship.url,
-                method: 'post',
-                data: this.form,
-                transformRequest: [
-                  (data, headers) => {
-                    data.student = JSON.parse(localStorage.getItem('user'));
-                    const values = this.checkboxGroup.weekday.values;
-                    let weekday = 0;
-                    for (let value of values) {
-                      weekday += 1 << value - 1;
+        buttons: {
+          student: [
+            {
+              label: '提交审核',
+              type: 'primary',
+              handler: () => {
+                this.$axios({
+                  url: this.$api.internship.url,
+                  method: 'post',
+                  data: this.form,
+                  transformRequest: [
+                    (data, headers) => {
+                      data.student = JSON.parse(localStorage.getItem('user'));
+                      const values = this.checkboxGroup.weekday.values;
+                      let weekday = 0;
+                      for (let value of values) {
+                        weekday += 1 << value - 1;
+                      }
+                      data.weekday = weekday;
+                      headers.post['Content-Type'] = 'application/json;charset=utf-8';
+                      return JSON.stringify(data);
                     }
-                    data.weekday = weekday;
-                    headers.post['Content-Type'] = 'application/json;charset=utf-8';
-                    return JSON.stringify(data);
-                  }
-                ],
-              }).then(data => {
-                this.$message({
-                  type: 'success',
-                  message: '提交成功',
-                });
-                this.close(true);
-              }).catch(err => {
-                this.$message({
-                  type: 'error',
-                  message: '提交失败'
+                  ],
+                }).then(data => {
+                  this.$message({
+                    type: 'success',
+                    message: '提交成功',
+                  });
+                  this.close(true);
+                }).catch(err => {
+                  this.$message({
+                    type: 'error',
+                    message: '提交失败'
+                  })
                 })
-              })
-            }
-          },
-          {
-            label: '取消',
-            handler: () => {
-              this.close();
-            }
-          },
-        ],
+              }
+            },
+            {
+              label: '取消',
+              handler: () => {
+                this.close();
+              }
+            },
+          ],
+          teacher: [
+            {
+              label: '通过',
+              type: 'primary',
+              handler: () => {
+                this.$emit('audit', [this.internship]);
+              }
+            },
+            {
+              label: '取消',
+              handler: () => {
+                this.close();
+              }
+            },
+          ],
+        },
         datePicker: {
           options: {
             shortcuts: [

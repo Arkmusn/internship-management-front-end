@@ -13,7 +13,8 @@
             </el-form-item>
             <el-form-item label="密码">
               <el-input type="password"
-                        v-model="form.password"></el-input>
+                        v-model="form.password"
+                        @keyup.enter.native="clickLogin"></el-input>
             </el-form-item>
             <div class="flex-container login-container">
               <el-button type="primary"
