@@ -7,7 +7,8 @@
       <el-form label-position="right"
                size="small"
                label-width="100px">
-        <el-form-item label="指导教师">
+        <el-form-item label="指导教师"
+                      v-if="type!=='teacher'">
           <el-select filterable
                      remote
                      :remote-method="asyncLoadTeacherData"
@@ -30,9 +31,12 @@
                           type="daterange"
                           :picker-options="datePicker.options"
                           v-model="datePicker.value"
-                          @change="changeDate"></el-date-picker>
+                          @change="changeDate"
+                          :readonly="type==='teacher'"></el-date-picker>
         </el-form-item>
         <el-form-item label="每周实习天">
+          <div class="weekday-mask"
+               v-if="type==='teacher'"></div>
           <el-checkbox-group v-model="checkboxGroup.weekday.values">
             <el-checkbox-button v-for="checkbox in checkboxGroup.weekday.options"
                                 :label="checkbox.value"
@@ -41,13 +45,16 @@
           </el-checkbox-group>
         </el-form-item>
         <el-form-item label="主题">
-          <el-input v-model="form.theme"></el-input>
+          <el-input v-model="form.theme"
+                    :readonly="type==='teacher'"></el-input>
         </el-form-item>
         <el-form-item label="实习公司">
-          <el-input v-model="form.companyName"></el-input>
+          <el-input v-model="form.companyName"
+                    :readonly="type==='teacher'"></el-input>
         </el-form-item>
         <el-form-item label="实习公司地址">
-          <el-input v-model="form.companyAddress"></el-input>
+          <el-input v-model="form.companyAddress"
+                    :readonly="type==='teacher'"></el-input>
         </el-form-item>
         <el-form-item label="实习内容">
           <quill-editor v-model="form.object"
@@ -95,6 +102,10 @@
       title: {
         type: String,
         default: '编辑实习申报书'
+      },
+      type: {
+        type: String,
+        default: 'student'
       }
     },
     mounted() {
@@ -132,7 +143,7 @@
                     const values = this.checkboxGroup.weekday.values;
                     let weekday = 0;
                     for (let value of values) {
-                      weekday += 1 << value;
+                      weekday += 1 << value - 1;
                     }
                     data.weekday = weekday;
                     headers.post['Content-Type'] = 'application/json;charset=utf-8';
@@ -200,23 +211,23 @@
             options: [
               {
                 label: '星期一',
-                value: 0,
-              },
-              {
-                label: '星期二',
                 value: 1,
               },
               {
-                label: '星期三',
+                label: '星期二',
                 value: 2,
               },
               {
-                label: '星期四',
+                label: '星期三',
                 value: 3,
               },
               {
-                label: '星期五',
+                label: '星期四',
                 value: 4,
+              },
+              {
+                label: '星期五',
+                value: 5,
               },
 
             ],
@@ -231,6 +242,7 @@
         editor: {
           object: {
             theme: 'snow',
+            readOnly: this.type === 'teacher',
             modules: {
               history: {},
               toolbar: [
@@ -246,6 +258,7 @@
           },
           arrangement: {
             theme: 'snow',
+            readOnly: this.type === 'teacher',
             modules: {
               history: {},
               toolbar: [
@@ -296,6 +309,21 @@
         let id = this.internship.id;
         if (id && id !== -1) {
           this.form = JSON.parse(JSON.stringify(this.internship));
+
+          let bit = 1;
+          let weekday = this.form.weekday;
+          this.checkboxGroup.weekday.values = [];
+          while (weekday > 0) {
+            if (weekday % 2 === 1 && bit <= 5) {
+              this.checkboxGroup.weekday.values.push(bit);
+            }
+            weekday >>= 1;
+            bit++;
+          }
+
+          this.datePicker.value = [];
+          this.datePicker.value.push(new Date(this.form.startTime));
+          this.datePicker.value.push(new Date(this.form.endTime));
         }
         else {
           this.form = {
@@ -323,5 +351,10 @@
 </script>
 
 <style scoped>
-
+  .weekday-mask {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+  }
 </style>

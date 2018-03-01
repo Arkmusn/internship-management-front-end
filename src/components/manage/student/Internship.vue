@@ -54,7 +54,7 @@
 </template>
 
 <script>
-  import EditInternship from './dialog/EditInternship'
+  import EditInternship from '../common/dialog/EditInternship'
 
   export default {
     name: 'internship',
@@ -98,7 +98,7 @@
             }, {
               label: '起止时间',
               prop: 'date',
-              formatter: row => row.startTime.toString() + ' - ' + row.endTime.toString(),
+              formatter: row => row.startTime + ' - ' + row.endTime,
             }, {
               label: '指导教师',
               prop: 'teacher.name'
@@ -133,9 +133,9 @@
 
         })
       },
-      updatePagination(data, pagination) {
-        pagination.size = data.size;
-        pagination.total = data.totalElements;
+      updatePagination(page, pagination) {
+        pagination.size = page.size;
+        pagination.total = page.totalElements;
       },
       selectionChange(selected) {
         this.table.selected = selected;
