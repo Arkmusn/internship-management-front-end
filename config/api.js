@@ -28,5 +28,6 @@ export default {
     'delete': apiUrl + '/intern/delete',
     audit: apiUrl + '/intern/audit',
     reject: apiUrl + '/intern/reject',
+    finish: apiUrl + '/intern/finish',
   },
 }

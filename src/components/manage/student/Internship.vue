@@ -24,12 +24,14 @@
                            width="250"
                            fixed="right">
             <template slot-scope="table">
+              <!--编辑-->
               <el-button size="mini"
                          type="primary"
                          @click="openDialog(table.row)"
                          v-if="table.row.status==='CREATED'||table.row.status==='NOT_PASS'">编辑
               </el-button>
 
+              <!--删除-->
               <el-popover placement="top"
                           trigger="click"
                           title="确认删除?"
@@ -49,6 +51,13 @@
                            @click="table.row.deleteVisible=true">删除
                 </el-button>
               </el-popover>
+
+              <!--结束-->
+              <el-button size="mini"
+                         type="success"
+                         @click="openFinish(table.row)"
+                         v-if="table.row.status==='PROCESSING'">结束
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -66,16 +75,21 @@
     <edit-internship :visible="dialog.visible"
                      :internship="dialog.internship"
                      @close="closeDialog"></edit-internship>
+    <finish-internship :visible="finish.visible"
+                       :internship="finish.internship"
+                       @close="closeFinish"></finish-internship>
   </div>
 </template>
 
 <script>
   import EditInternship from '../common/dialog/EditInternship'
+  import FinishInternship from '../common/dialog/FinishInternship'
 
   export default {
     name: 'internship',
     components: {
       'edit-internship': EditInternship,
+      'finish-internship': FinishInternship,
     },
     mounted() {
       this.loadInternshipData();
@@ -122,6 +136,10 @@
           ]
         },
         dialog: {
+          visible: false,
+          internship: {},
+        },
+        finish: {
           visible: false,
           internship: {},
         },
@@ -194,6 +212,16 @@
           }).catch(err => {
           })
         }
+      },
+      openFinish(internship) {
+        this.finish.internship = internship;
+        this.finish.visible = true;
+      },
+      closeFinish(success) {
+        if (success) {
+          this.loadInternshipData();
+        }
+        this.finish.visible = false;
       },
     },
   }
