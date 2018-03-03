@@ -24,6 +24,7 @@
                            width="250"
                            fixed="right">
             <template slot-scope="table">
+
               <!--编辑-->
               <el-button size="mini"
                          type="primary"
@@ -114,7 +115,10 @@
                   case 'NOT_PASS':
                     return '未通过';
                     break;
-                  case 'FINISH':
+                  case 'FINISHED':
+                    return '待评分';
+                    break;
+                  case 'END':
                     return '已结束';
                     break;
                 }

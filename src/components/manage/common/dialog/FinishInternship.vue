@@ -11,6 +11,13 @@
           <quill-editor v-model="form.summary"
                         :options="editor.options"></quill-editor>
         </el-form-item>
+        <el-form-item label="实习评分"
+                      v-if="this.type==='teacher'">
+          <el-slider v-model="form.rank"
+                     :max="10"
+                     show-stops
+                     show-input></el-slider>
+        </el-form-item>
       </el-form>
       <span slot="footer">
         <template v-if="type==='student'">
@@ -55,13 +62,19 @@
         type: String,
         default: 'student',
       },
+      internship: {
+        type: Object,
+        default: () => {
+          return {};
+        }
+      },
     },
     data() {
       return {
         form: {
           id: -1,
           summary: '',
-          rank: -1,
+          rank: 8,
         },
         buttons: {
           student: [
@@ -77,7 +90,8 @@
                   this.$message({
                     type: 'success',
                     message: '提交成功',
-                  })
+                  });
+                  this.close(true);
                 }).catch(err => {
                 })
               }
@@ -89,11 +103,38 @@
               }
             }
           ],
-          teacher: [],
+          teacher: [
+            {
+              label: '评分',
+              type: 'primary',
+              handler: () => {
+                this.$axios({
+                  url: this.$api.internship.rank,
+                  method: 'post',
+                  data: this.form
+                }).then(() => {
+                  this.$message({
+                    type: 'success',
+                    message: '评分成功',
+                  });
+                  this.close(true);
+                }).catch(err => {
+                })
+              }
+            },
+            {
+              label: '取消',
+              handler: () => {
+                this.close();
+              }
+            }
+
+          ],
         },
         editor: {
           options: {
             theme: 'snow',
+            readOnly: this.type === 'teacher',
             modules: {
               history: {},
               toolbar: [
@@ -117,19 +158,20 @@
     },
     watch: {
       internship() {
+        console.log('wat');
         let id = this.internship.id;
         if (id && id !== -1) {
           this.form = {
             id: id,
             summary: '',
-            rank: -1,
+            rank: 8,
           };
         }
         else {
           this.form = {
             id: -1,
             summary: '',
-            rank: -1,
+            rank: 8,
           };
         }
       },

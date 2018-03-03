@@ -189,6 +189,13 @@
               }
             },
             {
+              label: '打回',
+              type: 'danger',
+              handler: () => {
+                this.$emit('reject', [this.internship]);
+              },
+            },
+            {
               label: '取消',
               handler: () => {
                 this.close();

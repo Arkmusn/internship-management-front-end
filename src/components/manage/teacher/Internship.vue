@@ -54,6 +54,11 @@
                            @click="table.row.rejectVisible=true">打回
                 </el-button>
               </el-popover>
+              <el-button size="mini"
+                         type="success"
+                         @click="openFinish(table.row)"
+                         v-if="table.row.status==='FINISHED'">评分
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -72,17 +77,24 @@
                      :internship="dialog.internship"
                      type="teacher"
                      @audit="audit"
+                     @reject="reject"
                      @close="closeDialog"></edit-internship>
+    <finish-internship :visible="finish.visible"
+                       :internship="finish.internship"
+                       type="teacher"
+                       @close="closeFinish"></finish-internship>
   </div>
 </template>
 
 <script>
   import EditInternship from '../common/dialog/EditInternship'
+  import FinishInternship from '../common/dialog/FinishInternship'
 
   export default {
     name: 'internship',
     components: {
       'edit-internship': EditInternship,
+      'finish-internship': FinishInternship,
     },
     mounted() {
       this.loadInternshipData();
@@ -108,7 +120,10 @@
                   case 'NOT_PASS':
                     return '未通过';
                     break;
-                  case 'FINISH':
+                  case 'FINISHED':
+                    return '待评分';
+                    break;
+                  case 'END':
                     return '已结束';
                     break;
                 }
@@ -130,6 +145,10 @@
           ]
         },
         dialog: {
+          visible: false,
+          internship: {},
+        },
+        finish: {
           visible: false,
           internship: {},
         },
@@ -213,14 +232,14 @@
         if (internships.length > 1) {
           this.$confirm('确定打回已选定的申报书吗?', '提示', {
             type: 'warning'
-          }).then(deleteRequest).catch(() => {
+          }).then(rejectRequest).catch(() => {
           })
         }
         else {
-          deleteRequest();
+          rejectRequest();
         }
 
-        function deleteRequest() {
+        function rejectRequest() {
           _this.$axios({
             url: _this.$api.internship.reject,
             method: 'post',
@@ -234,6 +253,16 @@
           }).catch(err => {
           })
         }
+      },
+      openFinish(internship) {
+        this.finish.internship = internship;
+        this.finish.visible = true;
+      },
+      closeFinish(success) {
+        if (success) {
+          this.loadInternshipData();
+        }
+        this.finish.visible = false;
       },
     },
   }

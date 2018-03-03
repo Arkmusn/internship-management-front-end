@@ -29,5 +29,6 @@ export default {
     audit: apiUrl + '/intern/audit',
     reject: apiUrl + '/intern/reject',
     finish: apiUrl + '/intern/finish',
+    rank: apiUrl + '/intern/rank',
   },
 }
