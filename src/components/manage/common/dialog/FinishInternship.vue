@@ -158,7 +158,6 @@
     },
     watch: {
       internship() {
-        console.log('wat');
         let id = this.internship.id;
         if (id && id !== -1) {
           this.form = {

@@ -53,6 +53,13 @@
                 </el-button>
               </el-popover>
 
+              <el-button size="mini"
+                         type="primary"
+                         @click="openReport(table.row)"
+
+                         v-if="table.row.status!=='CREATED'&&table.row.status!=='NOT_PASS'">查看周报
+              </el-button>
+
               <!--结束-->
               <el-button size="mini"
                          type="success"
@@ -79,18 +86,23 @@
     <finish-internship :visible="finish.visible"
                        :internship="finish.internship"
                        @close="closeFinish"></finish-internship>
+    <report-table :visible="report.visible"
+                  :internship="report.internship"
+                  @close="closeReport"></report-table>
   </div>
 </template>
 
 <script>
   import EditInternship from '../common/dialog/EditInternship'
   import FinishInternship from '../common/dialog/FinishInternship'
+  import ReportTable from '../common/dialog/ReportTable'
 
   export default {
     name: 'internship',
     components: {
       'edit-internship': EditInternship,
       'finish-internship': FinishInternship,
+      'report-table': ReportTable,
     },
     mounted() {
       this.loadInternshipData();
@@ -144,6 +156,10 @@
           internship: {},
         },
         finish: {
+          visible: false,
+          internship: {},
+        },
+        report: {
           visible: false,
           internship: {},
         },
@@ -226,6 +242,16 @@
           this.loadInternshipData();
         }
         this.finish.visible = false;
+      },
+      openReport(internship) {
+        this.report.internship = internship;
+        this.report.visible = true;
+      },
+      closeReport(success) {
+        if (success) {
+          this.loadInternshipData();
+        }
+        this.report.visible = false;
       },
     },
   }
