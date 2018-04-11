@@ -12,7 +12,7 @@
           </el-col>
           <el-col :span="12"
                   class="flex-container logout-box">
-            <span class="plain-text username-box">{{ username }}</span>
+            <span class="plain-text username-box">{{ username }}，你好</span>
             <el-button round
                        size="mini"
                        @click="logout">注销
@@ -39,7 +39,7 @@
     computed: {
       username() {
         const user = JSON.parse(localStorage.getItem('user'));
-        return user.username;
+        return user.name;
       },
     },
     methods: {

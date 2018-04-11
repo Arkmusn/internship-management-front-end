@@ -61,7 +61,7 @@
           }
         }).then(data => {
           localStorage.setItem('user', JSON.stringify(data));
-          const role = data.roles[0].name;
+          const role = data.user.roles[0].name;
           this.$router.push('./manage/' + role);
         }).catch(err => {
           this.$message({
