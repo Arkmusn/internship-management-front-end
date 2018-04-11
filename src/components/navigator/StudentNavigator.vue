@@ -9,11 +9,11 @@
         active-text-color="#ffd04b"
         class="navigator-container"
         router>
-        <el-menu-item>
+        <el-menu-item index="/#">
           <i class="el-icon-setting"></i>
           <span slot="title">查看公告</span>
         </el-menu-item>
-        <el-menu-item>
+        <el-menu-item index="/#">
           <i class="el-icon-setting"></i>
           <span slot="title">个人信息管理</span>
         </el-menu-item>
@@ -21,7 +21,7 @@
           <i class="el-icon-setting"></i>
           <span slot="title">实习信息管理</span>
         </el-menu-item>
-        <el-menu-item>
+        <el-menu-item index="/#">
           <i class="el-icon-setting"></i>
           <span slot="title">就业协议</span>
         </el-menu-item>

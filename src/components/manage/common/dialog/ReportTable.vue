@@ -28,7 +28,7 @@
               <template slot-scope="table">
                 <el-button size="mini"
                            type="primary"
-                           @click="openDialog(table.row)">编辑
+                           @click="openDialog(table.row, table)">编辑
                 </el-button>
                 <el-button size="mini"
                            type="primary"
@@ -50,7 +50,6 @@
     </el-dialog>
     <edit-report :visible="dialog.visible"
                  :report="dialog.report"
-                 :intern="internship"
                  :type="type"
                  @close="closeDialog"></edit-report>
   </div>
@@ -147,9 +146,16 @@
           this.table.data.push({time: item});
         }
         this.time = arr;
+        this.buildTableData();
       },
-      openDialog(report) {
+      buildTableData() {
+        for (let item of this.table.data) {
+          item.intern = this.internship;
+        }
+      },
+      openDialog(report, table) {
         this.dialog.report = report;
+        report.position = table.$index;
         this.dialog.visible = true;
       },
       closeDialog(success) {

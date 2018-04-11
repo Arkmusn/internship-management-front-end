@@ -63,12 +63,6 @@
           return {};
         }
       },
-      intern: {
-        type: Object,
-        default: () => {
-          return {};
-        }
-      }
     },
     data() {
       return {
@@ -146,12 +140,8 @@
           this.form = JSON.parse(JSON.stringify(this.report));
         }
         else {
-          this.form = {
-            id: -1,
-            process: '',
-            time: this.report.time,
-            intern: this.intern,
-          };
+          this.form = JSON.parse(JSON.stringify(this.report));
+          this.form.id = -1;
         }
       },
     },
