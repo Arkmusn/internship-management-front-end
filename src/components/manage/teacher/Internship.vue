@@ -59,6 +59,11 @@
                          @click="openFinish(table.row)"
                          v-if="table.row.status==='FINISHED'">评分
               </el-button>
+              <el-button size="mini"
+                         type="primary"
+                         @click="openFinish(table.row, true)"
+                         v-if="table.row.status==='END'">查看总结
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -81,6 +86,7 @@
                      @close="closeDialog"></edit-internship>
     <finish-internship :visible="finish.visible"
                        :internship="finish.internship"
+                       :finishFlag="finish.finishFlag"
                        type="teacher"
                        @close="closeFinish"></finish-internship>
   </div>
@@ -149,6 +155,7 @@
           internship: {},
         },
         finish: {
+          finishFlag: false,
           visible: false,
           internship: {},
         },
@@ -187,7 +194,8 @@
         if (this.isSelectable(row))
           this.$refs['table-internship'].toggleRowSelection(row);
       },
-      openDialog(internship) {
+      openDialog(internship, finishFlag) {
+        this.finishFlag = !!finishFlag;
         this.dialog.internship = internship;
         this.dialog.visible = true;
       },
@@ -222,6 +230,7 @@
               type: 'success',
               message: '审核完成',
             });
+            if (_this.dialog.visible = true) _this.dialog.visible = false;
             _this.loadInternshipData();
           }).catch(err => {
           })
@@ -259,10 +268,10 @@
         this.finish.visible = true;
       },
       closeFinish(success) {
+        this.finish.visible = false;
         if (success) {
           this.loadInternshipData();
         }
-        this.finish.visible = false;
       },
     },
   }

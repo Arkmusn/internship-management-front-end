@@ -63,12 +63,20 @@
           return {};
         }
       },
+      intern: {
+        type: Object,
+        default: () => {
+          return {};
+        }
+      }
     },
     data() {
       return {
         form: {
           id: -1,
           process: '',
+          time: '',
+          intern: null,
         },
         editor: {
           options: {
@@ -97,7 +105,14 @@
                 this.$axios({
                   url: this.$api.report.url,
                   method: 'post',
-
+                  data: this.form
+                }).then(data => {
+                  this.$message({
+                    type: 'success',
+                    message: '保存成功',
+                  });
+                  this.close();
+                }).catch(err => {
                 })
               }
             },
@@ -134,6 +149,8 @@
           this.form = {
             id: -1,
             process: '',
+            time: this.report.time,
+            intern: this.intern,
           };
         }
       },

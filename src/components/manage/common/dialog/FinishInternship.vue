@@ -7,9 +7,11 @@
       <el-form label-position="right"
                size="small"
                label-width="100px">
-        <el-form-item label="实习总结">
+        <el-form-item label="实习总结"
+                      class="editor-box">
           <quill-editor v-model="form.summary"
-                        :options="editor.options"></quill-editor>
+                        :options="editor.options"
+                        class="editor"></quill-editor>
         </el-form-item>
         <el-form-item label="实习评分"
                       v-if="this.type==='teacher'">
@@ -160,11 +162,7 @@
       internship() {
         let id = this.internship.id;
         if (id && id !== -1) {
-          this.form = {
-            id: id,
-            summary: '',
-            rank: 8,
-          };
+          this.form = this.form = JSON.parse(JSON.stringify(this.internship));
         }
         else {
           this.form = {
@@ -179,5 +177,10 @@
 </script>
 
 <style scoped>
-
+  .editor-box {
+    height: 200px;
+  }
+  .editor {
+    height: 160px;
+  }
 </style>

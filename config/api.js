@@ -31,4 +31,7 @@ export default {
     finish: apiUrl + '/intern/finish',
     rank: apiUrl + '/intern/rank',
   },
+  report: {
+    url: apiUrl + '/report/',
+  }
 }

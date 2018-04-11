@@ -50,6 +50,7 @@
     </el-dialog>
     <edit-report :visible="dialog.visible"
                  :report="dialog.report"
+                 :intern="internship"
                  :type="type"
                  @close="closeDialog"></edit-report>
   </div>

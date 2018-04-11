@@ -68,6 +68,12 @@
                          @click="openFinish(table.row)"
                          v-if="table.row.status==='PROCESSING'">结束
               </el-button>
+              <!--查看总结-->
+              <el-button size="mini"
+                         type="primary"
+                         @click="openFinish(table.row, true)"
+                         v-if="table.row.status==='FINISHED'||table.row.status==='END'">查看总结
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -87,6 +93,7 @@
                      @close="closeDialog"></edit-internship>
     <finish-internship :visible="finish.visible"
                        :internship="finish.internship"
+                       :finishFlag="finish.finishFlag"
                        @close="closeFinish"></finish-internship>
     <report-table :visible="report.visible"
                   :internship="report.internship"
@@ -159,6 +166,7 @@
         },
         finish: {
           visible: false,
+          finishFlag: false,
           internship: {},
         },
         report: {
@@ -235,15 +243,16 @@
           })
         }
       },
-      openFinish(internship) {
+      openFinish(internship, finishFlag) {
+        this.finishFlag = !!finishFlag;
         this.finish.internship = internship;
         this.finish.visible = true;
       },
       closeFinish(success) {
+        this.finish.visible = false;
         if (success) {
           this.loadInternshipData();
         }
-        this.finish.visible = false;
       },
       openReport(internship) {
         this.report.internship = internship;

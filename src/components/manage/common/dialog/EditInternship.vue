@@ -2,7 +2,7 @@
   <div id="EditInternship">
     <el-dialog :visible.sync="visible"
                :before-close="close"
-               width="55%"
+               width="70%"
                :title="title">
       <el-form label-position="right"
                size="small"
@@ -81,7 +81,8 @@
           <el-button v-for="button in buttons.teacher"
                      :key="button.label"
                      :type="button.type"
-                     @click="button.handler">{{ button.label }}
+                     @click="button.handler"
+                     v-if="button.disabled">{{ button.label }}
           </el-button>
         </template>
       </span>
@@ -101,6 +102,10 @@
       'quill-editor': QuillEditor
     },
     props: {
+      finishFlag: {
+        type: Boolean,
+        default: false,
+      },
       visible: {
         type: Boolean,
         default: false
@@ -143,6 +148,7 @@
         buttons: {
           student: [
             {
+              disabled: this.finishFlag,
               label: '提交审核',
               type: 'primary',
               handler: () => {
@@ -152,7 +158,7 @@
                   data: this.form,
                   transformRequest: [
                     (data, headers) => {
-                      data.student = JSON.parse(localStorage.getItem('user'));
+                      data.student = JSON.parse(localStorage.getItem('user')).user;
                       const values = this.checkboxGroup.weekday.values;
                       let weekday = 0;
                       for (let value of values) {
