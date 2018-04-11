@@ -1,7 +1,9 @@
 <template>
-  <div id="teacher">
-    <el-row>
-      <el-col>
+  <div id="teacher"
+       class="flex-container main-box full-height">
+    <el-row type="flex"
+            justify="space-between">
+      <el-col :span="8">
         <el-button-group>
           <el-button type="primary"
                      @click="openDialog({})">新增教师
@@ -13,9 +15,16 @@
                    @click="deleteTeacher(table.selected)">删除
         </el-button>
       </el-col>
+      <el-col :span="4">
+        <el-input
+          placeholder="请输入教工号或姓名">
+          <i slot="suffix"
+             class="el-input__icon el-icon-search"></i>
+        </el-input>
+      </el-col>
     </el-row>
-    <el-row>
-      <el-col>
+    <el-row class="table-box">
+      <el-col class="full-height">
         <el-table
           ref="table-teacher"
           :data="table.data"
@@ -238,3 +247,12 @@
     },
   }
 </script>
+
+<style scoped>
+  .main-box {
+    flex-direction: column;
+  }
+  .table-box {
+    flex-grow: 99;
+  }
+</style>

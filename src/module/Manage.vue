@@ -6,8 +6,9 @@
                 justify="space-between"
                 align="middle"
                 class="full-height">
-          <el-col :span="12">
-            logo
+          <el-col :span="12"
+                  class="title-font">
+            实习就业管理系统
           </el-col>
           <el-col :span="12"
                   class="flex-container logout-box">
@@ -73,5 +74,11 @@
   }
   .username-box {
     margin-right: 5px;
+  }
+  .title-font {
+    font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
+    font-size: 1.5em;
+    font-weight: 600;
+    color: #ecf5ff;
   }
 </style>

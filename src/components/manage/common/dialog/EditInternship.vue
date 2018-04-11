@@ -2,7 +2,7 @@
   <div id="EditInternship">
     <el-dialog :visible.sync="visible"
                :before-close="close"
-               width="70%"
+               width="55%"
                :title="title">
       <el-form label-position="right"
                size="small"
@@ -56,13 +56,17 @@
           <el-input v-model="form.companyAddress"
                     :readonly="type==='teacher'"></el-input>
         </el-form-item>
-        <el-form-item label="实习内容">
+        <el-form-item label="实习内容"
+                      class="editor-box">
           <quill-editor v-model="form.object"
-                        :options="editor.object"></quill-editor>
+                        :options="editor.object"
+                        class="editor"></quill-editor>
         </el-form-item>
-        <el-form-item label="计划安排">
+        <el-form-item label="计划安排"
+                      class="editor-box">
           <quill-editor v-model="form.arrangement"
-                        :options="editor.arrangement"></quill-editor>
+                        :options="editor.arrangement"
+                        class="editor"></quill-editor>
         </el-form-item>
       </el-form>
       <span slot="footer">
@@ -388,5 +392,11 @@
     height: 100%;
     width: 100%;
     z-index: 1;
+  }
+  .editor-box {
+    height: 200px;
+  }
+  .editor {
+    height: 160px;
   }
 </style>

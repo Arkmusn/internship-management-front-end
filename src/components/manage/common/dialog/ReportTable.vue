@@ -48,14 +48,22 @@
                    @click="button.handler">{{ button.label }}</el-button>
       </span>
     </el-dialog>
+    <edit-report :visible="dialog.visible"
+                 :report="dialog.report"
+                 :type="type"
+                 @close="closeDialog"></edit-report>
   </div>
 </template>
 
 <script>
   import Moment from 'moment'
+  import EditReport from './EditReport'
 
   export default {
     name: 'ReportTable',
+    components: {
+      'edit-report': EditReport,
+    },
     props: {
       title: {
         type: String,
@@ -106,6 +114,10 @@
             }
           }
         ],
+        dialog: {
+          visible: false,
+          report: {},
+        },
         time: [],
       }
     },
@@ -134,6 +146,16 @@
           this.table.data.push({time: item});
         }
         this.time = arr;
+      },
+      openDialog(report) {
+        this.dialog.report = report;
+        this.dialog.visible = true;
+      },
+      closeDialog(success) {
+        if (success) {
+//          this.loadInternshipData();
+        }
+        this.dialog.visible = false;
       },
     },
     watch: {

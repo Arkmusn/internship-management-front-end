@@ -18,8 +18,24 @@
           <span slot="title">教师信息管理</span>
         </el-menu-item>
         <el-menu-item index="/manage/admin/student">
-          <i class="el-icon-menu"></i>
+          <i class="el-icon-setting"></i>
           <span slot="title">学生信息管理</span>
+        </el-menu-item>
+        <el-menu-item index="/#">
+          <i class="el-icon-setting"></i>
+          <span slot="title">实习申报书管理</span>
+        </el-menu-item>
+        <el-menu-item index="/#">
+          <i class="el-icon-setting"></i>
+          <span slot="title">院系信息管理</span>
+        </el-menu-item>
+        <el-menu-item index="/#">
+          <i class="el-icon-setting"></i>
+          <span slot="title">班级信息管理</span>
+        </el-menu-item>
+        <el-menu-item index="/#">
+          <i class="el-icon-setting"></i>
+          <span slot="title">就业协议管理</span>
         </el-menu-item>
       </el-menu>
     </el-aside>

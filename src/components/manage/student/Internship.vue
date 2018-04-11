@@ -1,5 +1,6 @@
 <template>
-  <div id="internship">
+  <div id="internship"
+       class="flex-container main-box full-height">
     <el-row>
       <el-col :span="24">
         <el-button type="primary"
@@ -7,8 +8,9 @@
         </el-button>
       </el-col>
     </el-row>
-    <el-row>
-      <el-col :span="24">
+    <el-row class="table-box">
+      <el-col :span="24"
+              class="full-height">
         <el-table
           :data="table.data"
           border
@@ -71,7 +73,7 @@
         </el-table>
       </el-col>
     </el-row>
-    <el-row>
+    <el-row class="pagination-box">
       <el-col>
         <el-pagination background
                        :total="pagination.total"
@@ -256,3 +258,12 @@
     },
   }
 </script>
+
+<style scoped>
+  .main-box {
+    flex-direction: column;
+  }
+  .table-box {
+    flex-grow: 99;
+  }
+</style>

@@ -1,5 +1,6 @@
 <template>
-  <div id="app">
+  <div id="app"
+       class="full-height">
     <router-view />
   </div>
 </template>
@@ -29,5 +30,8 @@
   }
   .full-height {
     height: 100%;
+  }
+  .el-row {
+    margin-bottom: 10px;
   }
 </style>

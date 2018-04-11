@@ -3,11 +3,19 @@
        class="full-height">
     <el-row type="flex"
             justify="center">
-      <el-col :span="6">
+      <el-col :span="4"
+              class="text-box">
+        <span class="title-font">实习就业管理系统</span>
+      </el-col>
+    </el-row>
+    <el-row type="flex"
+            justify="center">
+      <el-col :span="4">
         <div class="form-container">
           <el-form label-width="60px"
                    :model="form"
-                   ref="form">
+                   ref="form"
+                   class="form-box">
             <el-form-item label="用户名">
               <el-input v-model="form.username"></el-input>
             </el-form-item>
@@ -73,5 +81,17 @@
   }
   .login-container {
     justify-content: center;
+  }
+  .title-font {
+    font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
+    font-size: 1.5em;
+    font-weight: 600;
+  }
+  .text-box {
+    margin-top: 45vh;
+    text-align: center;
+  }
+  .form-box {
+    margin: 10px;
   }
 </style>
