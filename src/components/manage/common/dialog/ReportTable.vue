@@ -158,9 +158,13 @@
         report.position = table.$index;
         this.dialog.visible = true;
       },
-      closeDialog(success) {
+      closeDialog(success, row) {
         if (success) {
-//          this.loadInternshipData();
+          if (row) {
+            this.table.data[row.position].status = 1;
+            const newData = JSON.parse(JSON.stringify(this.table.data));
+            this.table.data = newData;
+          }
         }
         this.dialog.visible = false;
       },

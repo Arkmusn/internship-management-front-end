@@ -96,18 +96,24 @@
               label: '提交',
               type: 'primary',
               handler: () => {
-                this.$axios({
-                  url: this.$api.report.url,
-                  method: 'post',
-                  data: this.form
-                }).then(data => {
-                  this.$message({
-                    type: 'success',
-                    message: '保存成功',
-                  });
-                  this.close();
-                }).catch(err => {
-                })
+                this.$message({
+                  type: 'success',
+                  message: '保存成功',
+                });
+                this.close(true, this.form);
+
+//                this.$axios({
+//                  url: this.$api.report.url,
+//                  method: 'post',
+//                  data: this.form
+//                }).then(data => {
+//                  this.$message({
+//                    type: 'success',
+//                    message: '保存成功',
+//                  });
+//                  this.close(true, this.form);
+//                }).catch(err => {
+//                })
               }
             },
             {
@@ -129,8 +135,8 @@
       }
     },
     methods: {
-      close(refresh) {
-        this.$emit('close', refresh);
+      close(refresh, row) {
+        this.$emit('close', refresh, row);
       },
     },
     watch: {
