@@ -62,7 +62,9 @@
         }).then(data => {
           localStorage.setItem('user', JSON.stringify(data));
           const role = data.user.roles[0].name;
-          this.$router.push('./manage/' + role);
+          if (role === 'admin') this.$router.push('./manage/' + role + '/teacher');
+          else if (role === 'teacher') this.$router.push('./manage/' + role + '/internship');
+          else if (role === 'student') this.$router.push('./manage/' + role + '/internship');
         }).catch(err => {
           this.$message({
             type: 'error',

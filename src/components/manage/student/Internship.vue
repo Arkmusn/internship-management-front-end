@@ -72,7 +72,13 @@
               <el-button size="mini"
                          type="primary"
                          @click="openFinish(table.row, true)"
-                         v-if="table.row.status==='FINISHED'||table.row.status==='END'">查看总结
+                         v-if="table.row.status==='FINISHED'">查看总结
+              </el-button>
+              <!--查看评分-->
+              <el-button size="mini"
+                         type="success"
+                         @click="openFinish(table.row, true)"
+                         v-if="table.row.status==='END'">查看评分
               </el-button>
             </template>
           </el-table-column>
