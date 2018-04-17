@@ -6,7 +6,7 @@
       <el-col :span="8">
         <el-button-group>
           <el-button type="primary"
-                     @click="openDialog({})">新增教师
+                     @click="openDialog({})">新增学生
           </el-button>
           <el-button>文件导入</el-button>
         </el-button-group>

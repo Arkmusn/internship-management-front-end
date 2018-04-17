@@ -14,9 +14,9 @@
                         class="editor"></quill-editor>
         </el-form-item>
         <el-form-item label="实习评分"
-                      v-if="internship.rank !== 0 || type === 'teacher'">
+                      v-if="!(type === 'student' && rank > 0)">
           <el-slider v-model="form.rank"
-                     :disabled="type === 'student' && internship.rank > 0"
+                     :disabled="type === 'student'"
                      :max="10"
                      show-stops
                      show-input></el-slider>

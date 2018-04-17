@@ -90,7 +90,7 @@
     font-weight: 600;
   }
   .text-box {
-    margin-top: 45vh;
+    margin-top: 35vh;
     text-align: center;
   }
   .form-box {

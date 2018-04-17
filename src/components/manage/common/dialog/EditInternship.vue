@@ -81,8 +81,7 @@
           <el-button v-for="button in buttons.teacher"
                      :key="button.label"
                      :type="button.type"
-                     @click="button.handler"
-                     v-if="button.disabled">{{ button.label }}
+                     @click="button.handler">{{ button.label }}
           </el-button>
         </template>
       </span>
